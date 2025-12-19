@@ -1,0 +1,25 @@
+Vagrant.configure(2) do |config|
+  config.vm.box = "ubuntu/jammy64"
+  
+  config.vm.define "bkasS" do |master|
+    master.vm.hostname = "bkasS"
+    master.vm.network "private_network", ip: "192.168.56.110"
+    master.vm.provider "virtualbox" do |vm|
+      vm.name = "bkasS"
+      vm.cpus = 1
+      vm.memory = 1024
+    end
+    master.vm.provision "shell", path: "scripts/install_k3s_server.sh"
+  end
+  
+  config.vm.define "bkasSW" do |worker|
+    worker.vm.hostname = "bkasSW"
+    worker.vm.network "private_network", ip: "192.168.56.111"
+    worker.vm.provider "virtualbox" do |vm|
+      vm.name = "bkasSW"
+      vm.cpus = 1
+      vm.memory = 1024
+    end
+    worker.vm.provision "shell", path: "scripts/install_k3s_worker.sh"
+  end
+end
