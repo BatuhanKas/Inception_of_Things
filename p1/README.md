@@ -1,17 +1,15 @@
 # Part 1: K3s Cluster with Vagrant
 
-Bu proje, Vagrant kullanarak otomatik olarak 2 node'lu bir K3s Kubernetes cluster'ı kurar.
+This project automatically sets up a 2-node K3s Kubernetes cluster using Vagrant.
 
-## 📋 İçindekiler
+## 📋 Table of Contents
 
-- [Mimari](#-mimari)
-- [Gereksinimler](#-gereksinimler)
-- [Kurulum](#-kurulum)
-- [Kullanım](#-kullanım)
-- [Cluster Bilgileri](#-cluster-bilgileri)
-- [Sorun Giderme](#-sorun-giderme)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Cluster Information](#-cluster-information)
+- [Troubleshooting](#-troubleshooting)
 
-## 🏗️ Mimari
+## 🏗️ Architecture
 
 ```
 ┌─────────────────────────────────────────────┐
@@ -29,57 +27,57 @@ Bu proje, Vagrant kullanarak otomatik olarak 2 node'lu bir K3s Kubernetes cluste
 │           │                     │           │
 │           └─────────┬───────────┘           │
 │                     │                       │
-│           Private Network (192.168.56.0/24) │
+│       Private Network (192.168.56.0/24)     │
 └─────────────────────────────────────────────┘
 ```
 
-## 🛠️ Gereksinimler
+## 🛠️ Requirements
 
-### Yazılım Gereksinimleri
+### Software Requirements
 
 - [Vagrant](https://www.vagrantup.com/downloads) >= 2.0
-- [VirtualBox](https://www.virtualbox.org/wiki/Downloads) >= 6.0 (veya VMware Fusion)
-- Minimum 2GB boş RAM
-- Minimum 10GB boş disk alanı
+- [VirtualBox](https://www.virtualbox.org/wiki/Downloads) >= 6.0 (or VMware Fusion)
+- Minimum 2GB free RAM
+- Minimum 10GB free disk space
 
-### Sistem Gereksinimleri
+### System Requirements
 
-- **macOS**: Intel veya Apple Silicon (ARM64)
-- **Linux**: x86_64 veya ARM64
-- **Windows**: WSL2 önerilir
+- **macOS**: Intel or Apple Silicon (ARM64)
+- **Linux**: x86_64 or ARM64
+- **Windows**: WSL2 recommended
 
-## 🚀 Kurulum
+## 🚀 Installation
 
-### 1. Repository'i Klonlayın
+### 1. Clone the Repository
 
 ```bash
 git clone <repo-url>
 cd iot/p1
 ```
 
-### 2. VM'leri Başlatın
+### 2. Start the VMs
 
 ```bash
-# Tüm cluster'ı başlat
+# Start the entire cluster
 vagrant up
 
-# Sadece server node'u başlat
+# Start only the server node
 vagrant up bkasS
 
-# Sadece worker node'u başlat
+# Start only the worker node
 vagrant up bkasSW
 ```
 
-İlk başlatma 5-10 dakika sürebilir (box indirme + kurulum).
+The first startup may take 5-10 minutes (box download + installation).
 
-### 3. Kurulumu Doğrulayın
+### 3. Verify Installation
 
 ```bash
-# Server node'a bağlan ve cluster durumunu kontrol et
+# Connect to server node and check cluster status
 vagrant ssh bkasS -c "sudo kubectl get nodes -o wide"
 ```
 
-**Beklenen Çıktı:**
+**Expected Output:**
 
 ```
 NAME     STATUS   ROLES                  AGE   VERSION        INTERNAL-IP       EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
@@ -87,81 +85,68 @@ bkass    Ready    control-plane,master   5m    v1.28.x+k3s1   192.168.56.110    
 bkassw   Ready    <none>                 3m    v1.28.x+k3s1   192.168.56.111    <none>        Ubuntu 24.04 LTS     6.x.x-xx-generic   containerd://x.x.x
 ```
 
-## 💻 Kullanım
+## 💻 Usage
 
-### Temel Komutlar
+### Basic Commands
 
 ```bash
-# VM durumunu görüntüle
+# View VM status
 vagrant status
 
-# VM'lere SSH ile bağlan
+# SSH into VMs
 vagrant ssh bkasS          # Server node
 vagrant ssh bkasSW         # Worker node
 
-# VM'leri durdur
+# Stop VMs
 vagrant halt
 
-# VM'leri yeniden başlat
+# Restart VMs
 vagrant reload
 
-# VM'leri tamamen sil
+# Completely delete VMs
 vagrant destroy -f
 
-# Provision scriptlerini yeniden çalıştır
+# Re-run provision scripts
 vagrant provision
 ```
 
-### Kubectl Komutları (Server Node İçinde)
+### Kubectl Commands (Inside Server Node)
 
 ```bash
-# Server node'a bağlan
+# Connect to server node
 vagrant ssh bkasS
 
-# Node'ları listele
+# List nodes
 sudo kubectl get nodes
 
-# Pod'ları listele
+# List pods
 sudo kubectl get pods -A
 
-# Namespace'leri listele
+# List namespaces
 sudo kubectl get namespaces
 
-# Servis'leri listele
+# List services
 sudo kubectl get services -A
 
-# Deployment oluştur
+# Create deployment
 sudo kubectl create deployment nginx --image=nginx
 
-# Deployment'ı scale et
+# Scale deployment
 sudo kubectl scale deployment nginx --replicas=3
 ```
 
-### Host'tan Kubectl Kullanımı (Opsiyonel)
+## 📊 Cluster Information
 
-```bash
-# Kubeconfig dosyasını kopyala
-vagrant ssh bkasS -c "sudo cat /etc/rancher/k3s/k3s.yaml" > ~/.kube/config-k3s
-
-# Server IP'sini güncelle
-sed -i '' 's/127.0.0.1/192.168.56.110/g' ~/.kube/config-k3s
-
-# Kullan
-kubectl --kubeconfig=~/.kube/config-k3s get nodes
-```
-
-## 📊 Cluster Bilgileri
-
-| Özellik | Değer |
+| Feature | Value |
 |---------|-------|
-| **K3s Versiyonu** | Latest (otomatik) |
+| **K3s Version** | Latest (automatic) |
 | **Kubernetes API** | https://192.168.56.110:6443 |
-| **Node Sayısı** | 2 (1 Server + 1 Worker) |
+| **Node Count** | 2 (1 Server + 1 Worker) |
 | **Network Plugin** | Flannel (default) |
 | **Ingress Controller** | Traefik (default) |
 | **Storage Class** | local-path (default) |
 
-### Node Detayları
+### Node Details
 
 #### bkasS (Server Node)
 - **Hostname**: bkasS
@@ -177,105 +162,88 @@ kubectl --kubeconfig=~/.kube/config-k3s get nodes
 - **Resources**: 1 CPU, 1024MB RAM
 - **Script**: `scripts/install_k3s_worker.sh`
 
-## 🔧 Sorun Giderme
+## 🔧 Troubleshooting
 
-### Worker Node Görünmüyor
+### Worker Node Not Showing Up
 
 ```bash
-# Server node'da token kontrolü
+# Check token on server node
 vagrant ssh bkasS -c "sudo cat /var/lib/rancher/k3s/server/node-token"
 
-# Worker node loglarını kontrol et
+# Check worker node logs
 vagrant ssh bkasSW -c "sudo journalctl -u k3s-agent -f"
 
-# VM'leri yeniden kur
+# Rebuild VMs
 vagrant destroy -f && vagrant up
 ```
 
-### Network Bağlantı Sorunları
+### Network Connection Issues
 
 ```bash
-# Node'ların birbirini görüp görmediğini test et
+# Test if nodes can reach each other
 vagrant ssh bkasS -c "ping -c 3 192.168.56.111"
 vagrant ssh bkasSW -c "ping -c 3 192.168.56.110"
 
-# Port erişimini kontrol et
+# Check port accessibility
 vagrant ssh bkasSW -c "nc -zv 192.168.56.110 6443"
 ```
 
-### K3s Servisi Çalışmıyor
+### K3s Service Not Running
 
 ```bash
-# Server node'da
+# On server node
 vagrant ssh bkasS -c "sudo systemctl status k3s"
 vagrant ssh bkasS -c "sudo systemctl restart k3s"
 
-# Worker node'da
+# On worker node
 vagrant ssh bkasSW -c "sudo systemctl status k3s-agent"
 vagrant ssh bkasSW -c "sudo systemctl restart k3s-agent"
 ```
 
-### VM Çok Yavaş
+### VM Too Slow
 
 ```bash
-# Vagrantfile'da resource'ları artır
+# Increase resources in Vagrantfile
 vm.cpus = 2
 vm.memory = 2048
 ```
 
-### Apple Silicon (M1/M2/M3/M4) Hataları
-
-VirtualBox ARM64 desteği sınırlıdır. Alternatifler:
-
-```bash
-# VMware Fusion kullan
-brew install --cask vmware-fusion
-vagrant plugin install vagrant-vmware-desktop
-
-# Vagrantfile'da provider değiştir
-config.vm.provider "vmware_desktop"
-
-# UTM kullan (ücretsiz)
-brew install --cask utm
-vagrant plugin install vagrant-qemu
-```
-
-## 📁 Dosya Yapısı
+## 📁 File Structure
 
 ```
 p1/
-├── Vagrantfile                      # VM tanımlamaları
-├── README.md                        # Bu dosya
+├── Vagrantfile                      # VM definitions
+├── README.md                        # This file
 ├── scripts/
-│   ├── install_k3s_server.sh       # Server kurulum scripti
-│   └── install_k3s_worker.sh       # Worker kurulum scripti
-├── token                            # K3s join token (otomatik oluşur)
-└── .vagrant/                        # Vagrant metadata (ignore edilmeli)
+│   ├── install_k3s_server.sh       # Server installation script
+│   └── install_k3s_worker.sh       # Worker installation script
+├── token                            # K3s join token (auto-generated)
+└── .vagrant/                        # Vagrant metadata (should be ignored)
 ```
 
-## 🎯 Sonraki Adımlar
+## 🎯 Next Steps
 
-- [ ] Helm kurulumu
+- [ ] Helm installation
 - [ ] ArgoCD deployment
 - [ ] Monitoring stack (Prometheus + Grafana)
-- [ ] Ingress konfigürasyonu
-- [ ] Persistent volume testleri
+- [ ] Ingress configuration
+- [ ] Persistent volume tests
 
-## 📚 Faydalı Linkler
+## 📚 Useful Links
 
 - [K3s Documentation](https://docs.k3s.io/)
 - [Vagrant Documentation](https://www.vagrantup.com/docs)
 - [Kubernetes Basics](https://kubernetes.io/docs/tutorials/kubernetes-basics/)
 
-## 📝 Notlar
+## 📝 Notes
 
-- Provision scriptleri **sadece ilk kurulumda** çalışır
-- `vagrant halt` + `vagrant up` → Scriptler çalışmaz
-- `vagrant destroy` + `vagrant up` → Scriptler yeniden çalışır
-- `vagrant provision` → Scriptleri manuel çalıştırır
+- Provision scripts run **only on first installation**
+- `vagrant halt` + `vagrant up` → Scripts won't run
+- `vagrant destroy` + `vagrant up` → Scripts will run again
+- `vagrant provision` → Manually run scripts
 
 ---
 
-**Hazırlayan**: [BatuhanKas](https://github.com/BatuhanKas)  
-**Tarih**: Aralık 2025  
-**Proje**: IoT Infrastructure - Part 1
+**Author**: [BatuhanKas](https://github.com/BatuhanKas)  
+**Date**: December 2025  
+**Project**: IoT Infrastructure - Part 1
