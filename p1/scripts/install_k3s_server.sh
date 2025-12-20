@@ -28,7 +28,7 @@ echo "Saving token for worker nodes..."
 cat /var/lib/rancher/k3s/server/node-token > /vagrant/token
 chmod 666 /vagrant/token
 
-echo "Installing kubectl (a.k.a. k3s)..."
+echo "Creating kubectl symlink to k3s binary..."
 ln -sf /usr/local/bin/k3s /usr/local/bin/kubectl
 
 echo "k3s Service Installation Completed!"
