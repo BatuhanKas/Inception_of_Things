@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app1-html
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>App 1</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                font-family: 'Arial', sans-serif;
+            }
+            .container {
+                text-align: center;
+                color: white;
+                padding: 40px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 20px;
+                box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+                backdrop-filter: blur(4px);
+                border: 1px solid rgba(255, 255, 255, 0.18);
+            }
+            h1 {
+                font-size: 3em;
+                margin: 0;
+                animation: fadeIn 1s ease-in;
+            }
+            p {
+                font-size: 1.5em;
+                margin-top: 20px;
+            }
+            .emoji {
+                font-size: 4em;
+                animation: bounce 2s infinite;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(-20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes bounce {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-20px); }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="emoji"></div>
+            <h1>Hello from App 1!</h1>
+            <p>Running on Kubernetes with K3s</p>
+            <p style="font-size: 1em; opacity: 0.8;">Powered by Nginx Alpine</p>
+        </div>
+    </body>
+    </html>
