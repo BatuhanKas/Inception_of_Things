@@ -24,10 +24,6 @@ until kubectl get nodes &>/dev/null; do
   sleep 2
 done
 
-echo "Saving token for worker nodes..."
-cat /var/lib/rancher/k3s/server/node-token > /vagrant/token
-chmod 666 /vagrant/token
-
 echo "Installing kubectl (a.k.a. k3s)..."
 ln -sf /usr/local/bin/k3s /usr/local/bin/kubectl
 

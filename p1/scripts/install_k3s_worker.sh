@@ -7,7 +7,7 @@ apt-get update -y
 apt-get upgrade -y
 
 echo "Installing required packages..."
-apt-get install -y curl ca-certificates apt-transport-https net-tools
+apt-get install -y curl ca-certificates net-tools
 
 SERVER_IP="192.168.56.110"
 WORKER_IP="192.168.56.111"
