@@ -6,8 +6,8 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/<USERNAME>/<REPO>
-    targetRevision: main
+    repoURL: https://github.com/BatuhanKas/Inception_of_Things.git
+    targetRevision: eren
     path: p3/repo/dev
   destination:
     server: https://kubernetes.default.svc
