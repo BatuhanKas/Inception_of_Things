@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/BatuhanKas/Inception_of_Things
+    repoURL: https://github.com/<USERNAME>/<REPO>
     targetRevision: main
     path: p3/repo/dev
   destination:
@@ -16,5 +16,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
