@@ -44,21 +44,23 @@ Set up a 2-node K3s Kubernetes cluster using Vagrant and VirtualBox/VMware.
 
 ---
 
-### Part 2: K3s with Multiple Workers 🚧
+### Part 2: K3s with Applications and Ingress ✅
 
-**Status**: In Progress
+**Status**: Completed
 
-Expand the cluster with additional worker nodes and implement load balancing.
+Deploy multiple applications with services and implement hostname-based routing using Kubernetes Ingress.
 
-**Planned Features**:
-- Multiple worker nodes
-- Load balancer configuration
-- Resource management
-- Service discovery
+**Features**:
+- Three containerized applications (app1, app2, app3)
+- ClusterIP services for internal load balancing
+- Traefik Ingress Controller with hostname routing
+- High availability setup (App 2 with 3 replicas)
+- Default backend routing for fallback requests
+- Automated deployment via Vagrant provisioning
 
-**Tech Stack**: K3s, Traefik, Flannel
+**Tech Stack**: K3s, Traefik, Kubernetes Services, Ingress, http-echo
 
-📖 Documentation: Coming Soon
+📖 [Detailed Documentation →](./p2/README.md)
 
 ---
 
