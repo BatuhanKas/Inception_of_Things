@@ -18,9 +18,11 @@ This project demonstrates the setup and configuration of Kubernetes environments
 
 ```
 iot/
-├── p1/          # Part 1: K3s Cluster Setup
-├── p2/          # Part 2: Advanced Configuration (Coming Soon)
+├── p1/          # Part 1: K3s Multi-Node Cluster
+├── p2/          # Part 2: K3s with Applications & Ingress
 ├── p3/          # Part 3: GitOps with ArgoCD (Coming Soon)
+├── CONTRIBUTING.md
+├── SECURITY.md
 └── README.md    # This file
 ```
 
@@ -140,39 +142,47 @@ vagrant ssh bkasS -c "sudo kubectl get nodes"
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these steps:
+Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting pull requests.
+
+**Quick steps:**
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
+3. Commit your changes (`git commit -m 'feat(p2): add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+5. Open a Pull Request using our [PR template](.github/PULL_REQUEST_TEMPLATE.md)
 
 ## 📝 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 👤 Author
+## 👤 Authors
 
 **Batuhan Kas**
 - GitHub: [@BatuhanKas](https://github.com/BatuhanKas)
+
+**Eren Demirer**
 - GitHub: [@erendemirer1](https://github.com/erendemirer1)
-- Project: [Inception of Things](https://github.com/BatuhanKas/iot)
+
+**Project Repository**: [Inception of Things](https://github.com/BatuhanKas/iot)
 
 ## 🙏 Acknowledgments
 
-- [42 School](https://www.42.fr/) for project inspiration
-- K3s community for lightweight Kubernetes
-- HashiCorp for Vagrant
+- [42 School](https://www.42.fr/) for the project concept
+- K3s community for lightweight Kubernetes distribution
+- HashiCorp for Vagrant and http-echo container
+- Traefik Labs for the ingress controller
 - Argo Project for GitOps tooling
+
+## 🔒 Security
+
+For security concerns, please review our [Security Policy](SECURITY.md).
 
 ## 📊 Project Status
 
-| Part | Status | Progress |
-|------|--------|----------|
-| Part 1 | ✅ Complete | 100% |
-| Part 2 | 🚧 In Progress | 0% |
-| Part 3 | 🔜 Planned | 0% |
+| Part | Status | Progress | Description |
+|------|--------|----------|-------------|
+| Part 1 | ✅ Complete | 100% | 2-node K3s cluster (server + worker) |
+| Part 2 | ✅ Complete | 100% | Applications with Ingress routing |
+| Part 3 | 🔜 Planned | 0% | K3D with ArgoCD GitOps |
 
 ---
 
