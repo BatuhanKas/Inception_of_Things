@@ -28,7 +28,7 @@ metadata:
   name: app1-service  # cluster service name for app2
 spec:
   selector:
-    app: app1
+    app: app1 # Service selector label. Must match Deployment .spec.template.metadata.labels and .spec.selector.matchLabels
   ports:
     - port: 80
       targetPort: 5678
