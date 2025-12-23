@@ -27,6 +27,7 @@ kind: Service
 metadata:
   name: app1-service  # cluster service name for app2
 spec:
+  type: ClusterIP #default
   selector:
     app: app1 # Service selector label. Must match Deployment .spec.template.metadata.labels and .spec.selector.matchLabels
   ports:
