@@ -13,15 +13,15 @@ echo "[2] Install k3d"
 curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
 
 echo "[3] Create k3d cluster (deterministic)"
-k3d cluster delete bkas-cluster || true
+k3d cluster delete bkasS-cluster || true
 
-k3d cluster create bkas-cluster \
+k3d cluster create bkasS-cluster \
   --agents 1 \
   -p "8888:8888@loadbalancer"
 
 echo "[4] Configure kubeconfig"
 mkdir -p /home/vagrant/.kube
-k3d kubeconfig get bkas-cluster > /home/vagrant/.kube/config
+k3d kubeconfig get bkasS-cluster > /home/vagrant/.kube/config
 chown -R vagrant:vagrant /home/vagrant/.kube
 chmod 600 /home/vagrant/.kube/config
 
