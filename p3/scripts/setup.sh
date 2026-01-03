@@ -42,5 +42,5 @@ kubectl rollout status deployment/argocd-server -n argocd --timeout=300s
 echo "[8] Deploy GitOps application"
 kubectl apply -f /vagrant/bootstrap/application.yaml
 
-echo -e "\e[1;34m[9] Port-forward Argo CD server: kubectl port-forward svc/argocd-server -n argocd 8081:443 --address 0.0.0.0\e[0m"
+echo -e "\e[1;34m[9] Port-forward Argo CD server: kubectl port-forward svc/argocd-server -n argocd 8081:443 --address 0.0.0.0\e[0m"echo -e "\e[1;34m[9] Port-forward Argo CD server: kubectl port-forward svc/argocd-server -n argocd 8081:443 --address 0.0.0.0\e[0m"
 kubectl port-forward svc/argocd-server -n argocd 8081:443 --address 0.0.0.0
