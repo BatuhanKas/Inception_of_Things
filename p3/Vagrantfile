@@ -13,7 +13,5 @@ Vagrant.configure("2") do |config|
     end
 
     vm.vm.provision "shell", path: "scripts/setup.sh"
-    vm.vm.provision "shell", path: "scripts/create_cluster.sh"
-    vm.vm.provision "shell", path: "scripts/install_argocd.sh"
   end
 end
