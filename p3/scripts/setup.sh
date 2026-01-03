@@ -22,7 +22,7 @@ k3d cluster delete bkasS-cluster || true
 
 k3d cluster create bkasS-cluster \
   --agents 1 \
-  -p "8888:8888@loadbalancer"
+  -p "8888:80@loadbalancer"
 
 echo "[5] Configure kubeconfig"
 mkdir -p /home/vagrant/.kube
@@ -45,5 +45,8 @@ kubectl rollout status deployment argocd-server -n argocd --timeout=300s
 echo "[8] Deploy GitOps application"
 kubectl apply -f /vagrant/bootstrap/application.yaml
 
-echo "[8] Port-forward (guaranteed access)"
-nohup kubectl -n dev port-forward svc/wil-service 8888:8888 --address 0.0.0.0 >/tmp/pf.log 2>&1 &
+echo "[9] Wait for application deployment"
+sleep 15
+kubectl wait --for=condition=available --timeout=300s deployment/wil-app -n dev || true
+
+echo "[10] Application ready - access at http://localhost:8888/"
