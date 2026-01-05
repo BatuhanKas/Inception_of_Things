@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/BatuhanKas/Inception_of_Things.git
+    repoURL: https://github.com/BatuhanKas/bkas-iot-p3.git
     targetRevision: main
-    path: p3/repo/dev
+    path: manifests
   destination:
     server: https://kubernetes.default.svc
     namespace: dev
