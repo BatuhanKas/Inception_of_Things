@@ -4,7 +4,7 @@ metadata:
   name: wil-playground
   namespace: argocd
 spec:
-  project: development
+  project: default
   source:
     repoURL: https://github.com/BatuhanKas/Inception_of_Things.git
     targetRevision: main
