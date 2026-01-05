@@ -1,46 +1,69 @@
 #!/bin/bash
 set -e
 
-echo "[1] Install dependencies"
-apt-get update -y
-apt-get install -y curl ca-certificates gnupg lsb-release docker.io
+SUDO="sudo"
+APT="$SUDO apt-get"
+APT_UPDATE="$APT update"
+APT_INSTALL="$APT install -y"
 
-systemctl enable docker
-systemctl start docker
-usermod -aG docker vagrant
+function is_installed()
+{
+    local arg=$1
+    command -v "$arg" >/dev/null 2>&1
+}
 
-echo "[2] Install kubectl"
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" # Download kubectl binary amd64
-chmod +x kubectl
-mv kubectl /usr/local/bin/
+function install_curl()
+{
+    if ! is_installed curl; then
+        echo "[INFO] Installing curl..."
+        $APT_UPDATE
+        $APT_INSTALL curl ca-certificates
+    fi
+}
 
-echo "[3] Install k3d"
-curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+function install_docker()
+{
+    if ! is_installed docker; then
+        echo "[INFO] Installing Docker..."
 
-echo "[4] Create k3d cluster (deterministic)"
-k3d cluster delete bkasS-cluster || true
-k3d cluster create bkasS-cluster --agents 1
+        $APT_UPDATE
+        $APT_INSTALL docker.io
+        $SUDO systemctl enable docker
+        $SUDO systemctl start docker
 
-echo "[5] Configure kubeconfig"
-mkdir -p /home/vagrant/.kube
-k3d kubeconfig get bkasS-cluster > /home/vagrant/.kube/config
-chown -R vagrant:vagrant /home/vagrant/.kube
-chmod 600 /home/vagrant/.kube/config
+        echo "[INFO] Docker installed."
+    fi
+}
 
-sed -i 's#https://0.0.0.0:#https://127.0.0.1:#' /home/vagrant/.kube/config
+function install_kubectl()
+{
+    if ! is_installed kubectl; then
+        echo "[INFO] Installing kubectl..."
 
-echo "[6] Install ArgoCD"
-kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -
-kubectl create namespace dev --dry-run=client -o yaml | kubectl apply -f -
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        chmod +x kubectl
+        $SUDO mv kubectl /usr/local/bin/
 
-kubectl apply -n argocd \
-  -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+        echo "[INFO] kubectl installed."
+    fi
+}
 
-echo "[7] Wait for Argo CD to be ready"
-kubectl rollout status deployment/argocd-server -n argocd --timeout=300s
+function install_k3d()
+{
+    if ! is_installed k3d; then
+        echo "[INFO] Installing k3d..."
 
-echo "[8] Deploy GitOps application"
-kubectl apply -f /vagrant/bootstrap/application.yaml
+        curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
 
-echo -e "\e[1;34m[9] Port-forward Argo CD server: kubectl port-forward svc/argocd-server -n argocd 8081:443 --address 0.0.0.0\e[0m"
-kubectl port-forward svc/argocd-server -n argocd 8081:443 --address 0.0.0.0
+        echo "[INFO] k3d installed."
+    fi
+}
+
+echo "[SETUP] Install dependencies"
+
+install_curl
+install_docker
+install_kubectl
+install_k3d
+
+echo "[SETUP] Setup completed successfully."
