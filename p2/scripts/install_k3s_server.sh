@@ -4,7 +4,6 @@ set -e
 
 echo "Updating system..."
 apt-get update -y
-apt-get upgrade -y
 
 echo "Installing required packages..."
 apt-get install -y curl ca-certificates net-tools
@@ -26,5 +25,7 @@ done
 
 echo "Creating kubectl symlink to k3s binary..."
 ln -sf /usr/local/bin/k3s /usr/local/bin/kubectl
+
+echo 'export PATH=$PATH:/usr/sbin' >> /home/vagrant/.bashrc
 
 echo "k3s Service Installation Completed!"

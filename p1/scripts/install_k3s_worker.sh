@@ -4,7 +4,6 @@ set -e
 
 echo "Updating system..."
 apt-get update -y
-apt-get upgrade -y
 
 echo "Installing required packages..."
 apt-get install -y curl ca-certificates net-tools
@@ -28,5 +27,7 @@ curl -sfL https://get.k3s.io | K3S_URL="https://${SERVER_IP}:6443" K3S_TOKEN="$N
 echo "Enabling k3s-Agent Service..."
 systemctl enable k3s-agent
 systemctl start k3s-agent
+
+echo 'export PATH=$PATH:/usr/sbin' >> /home/vagrant/.bashrc
 
 echo "k3s WORKER installation completed!"
