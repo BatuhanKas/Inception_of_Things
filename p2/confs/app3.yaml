@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app3-deployment  # cluster deployment name for app2
+  name: app3-deployment  # deployment name
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: app3 # deployment selector label for app2. It should match the label names in the template
+      app: app3 # deployment label
   template:
     metadata:
       labels:
-        app: app3 # pod label creator for app2. It should match the deployment selector label.
+        app: app3 # pod label
     spec:
       containers:
         - name: app3
@@ -26,11 +26,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: app3-service  # cluster service name for app2
+  name: app3-service  # service name
 spec:
   type: ClusterIP #default
   selector:
-    app: app3 # Service selector label. Must match Deployment .spec.template.metadata.labels and .spec.selector.matchLabels
+    app: app3 # Service label
   ports:
     - port: 80
       targetPort: 8080
