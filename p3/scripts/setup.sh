@@ -7,8 +7,7 @@ SUDO_APT_INSTALL="$SUDO_APT install -y"
 
 function is_installed()
 {
-    local arg=$1
-    which "$arg" >/dev/null 2>&1
+    which "$1" >/dev/null 2>&1
 }
 
 function install_curl()

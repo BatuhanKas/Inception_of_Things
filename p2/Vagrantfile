@@ -8,7 +8,6 @@ Vagrant.configure(2) do |config|
       vm.name = "bkasS"
       vm.cpus = 3
       vm.memory = 3072
-      # VirtualBox optimizations
       vm.customize ["modifyvm", :id, "--ioapic", "on"] # for multi-core usage
     end
     master.vm.provision "shell", path: "scripts/install_k3s_server.sh"
