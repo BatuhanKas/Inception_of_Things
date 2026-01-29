@@ -8,8 +8,8 @@ Vagrant.configure(2) do |config|
       vm.name = "bkasS"
       vm.cpus = 3
       vm.memory = 3072
-      vm.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      vm.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      vm.customize ["modifyvm", :id, "--natdnshostresolver1", "on"] # for DNS resolution
+      vm.customize ["modifyvm", :id, "--natdnsproxy1", "on"] # for DNS proxy
       vm.customize ["modifyvm", :id, "--ioapic", "on"] # for multi-core usage
     end
     master.vm.provision "shell", path: "scripts/install_k3s_server.sh"
@@ -22,8 +22,8 @@ Vagrant.configure(2) do |config|
       vm.name = "bkasSW"
       vm.cpus = 3
       vm.memory = 3072
-      vm.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      vm.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+      vm.customize ["modifyvm", :id, "--natdnshostresolver1", "on"] # for DNS resolution
+      vm.customize ["modifyvm", :id, "--natdnsproxy1", "on"] # for DNS proxy
       vm.customize ["modifyvm", :id, "--ioapic", "on"] # for multi-core usage
     end
     worker.vm.provision "shell", path: "scripts/install_k3s_worker.sh"
