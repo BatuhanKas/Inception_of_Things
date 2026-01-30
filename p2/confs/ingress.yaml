@@ -8,7 +8,7 @@ spec:
       http:
         paths:
           - path: /
-            pathType: Prefix
+            pathType: Prefix # Match all paths
             backend:
               service:
                 name: app1-service
@@ -19,7 +19,7 @@ spec:
       http:
         paths:
           - path: /
-            pathType: Prefix
+            pathType: Prefix # Match all paths
             backend:
               service:
                 name: app2-service
@@ -29,7 +29,7 @@ spec:
     - http: # default host
         paths:
           - path: /
-            pathType: Prefix
+            pathType: Prefix # Match all paths
             backend:
               service:
                 name: app3-service

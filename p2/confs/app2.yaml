@@ -6,11 +6,11 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      app: app2 # deployment label
+      app: app2 # deployment label found the pod
   template:
     metadata:
       labels:
-        app: app2 # pod label
+        app: app2 # pod label tag prefix
     spec:
       containers:
         - name: app2
@@ -30,7 +30,7 @@ metadata:
 spec:
   type: ClusterIP #default
   selector:
-    app: app2 # Service label
+    app: app2 # Service label forward traffic to the pods
   ports:
     - port: 80
       targetPort: 8080
